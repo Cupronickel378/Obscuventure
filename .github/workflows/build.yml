@@ -1,0 +1,53 @@
+name: Obscuventure Auto-Build
+
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-mod:
+    runs-on: ubuntu-latest
+
+    steps:
+   
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'gradle' 
+
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+  
+    - name: Build Mod with Gradle
+      run: ./gradlew build
+
+    
+    - name: Upload Compiled Jar
+      uses: actions/upload-artifact@v4
+      with:
+        name: Obscuventure-Build
+        path: build/libs/*.jar
+
+    
+    - name: Send Discord Notification
+      uses: appleboy/discord-action@master
+      if: always() 
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        message: |
+          **Проект:** `Obscuventure` 🛠️
+          **Статус сборки:** ${{ job.status == 'success' && '✅ УСПЕШНО СОБРАН!' || '❌ ОШИБКА СБОРКИ!' }}
+          **Коммит:** "${{ github.event.head_commit.message }}"
+          **Автор:** ${{ github.actor }}
+          **Ссылка:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
