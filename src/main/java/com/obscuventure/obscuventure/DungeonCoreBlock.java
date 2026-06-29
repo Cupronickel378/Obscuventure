@@ -29,7 +29,6 @@ public class DungeonCoreBlock extends Block {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
             ServerLevel serverLevel = (ServerLevel) level;
 
@@ -38,9 +37,8 @@ public class DungeonCoreBlock extends Block {
             List<ServerPlayer> playersNearby = serverLevel.getEntitiesOfClass(ServerPlayer.class, area);
 
             for (ServerPlayer partyPlayer : playersNearby) {
-            
                 partyPlayer.getPersistentData().putBoolean("dungeon_cleared", true);
-            
+
                 if (partyPlayer.hasEffect(MobEffects.DIG_SLOWDOWN)) {
                     partyPlayer.removeEffect(MobEffects.DIG_SLOWDOWN);
                 }
@@ -50,6 +48,10 @@ public class DungeonCoreBlock extends Block {
             }
 
             level.playSound(null, pos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+            ItemStack rewardBag = new ItemStack(ModInit.CURSED_BAG.get());
+            ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, rewardBag);
+            level.addFreshEntity(entity);
 
             level.destroyBlock(pos, false);
 

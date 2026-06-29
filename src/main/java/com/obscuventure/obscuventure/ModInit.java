@@ -42,6 +42,9 @@ public class ModInit {
     public static final RegistryObject<Item> DUNGEON_CORE_ITEM = ITEMS.register("dungeon_core",
             () -> new BlockItem(DUNGEON_CORE.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> CURSED_BAG = ITEMS.register("cursed_bag",
+            () -> new CursedBagItem(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<CreativeModeTab> OBSCUVENTURE_TAB = CREATIVE_MODE_TABS.register("obscuventure_tab",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(MYSTIC_GEM.get()))
@@ -50,6 +53,7 @@ public class ModInit {
                         output.accept(MYSTIC_GEM.get());
                         output.accept(MYSTIC_BLOCK_ITEM.get());
                         output.accept(DUNGEON_CORE_ITEM.get());
+                        output.accept(CURSED_BAG.get());
                     })
                     .build());
 
