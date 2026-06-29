@@ -26,6 +26,9 @@ public class ModInit {
                     .strength(3.0f, 6.0f)
                     .sound(SoundType.STONE)));
 
+    public static final RegistryObject<Item> MYSTIC_BLOCK_ITEM = ITEMS.register("mystic_block",
+            () -> new BlockItem(MYSTIC_BLOCK.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> MYSTIC_GEM = ITEMS.register("mystic_gem",
             () -> new Item(new Item.Properties()));
 
@@ -45,7 +48,7 @@ public class ModInit {
                     .title(Component.translatable("creativetab.obscuventure"))
                     .displayItems((parameters, output) -> {
                         output.accept(MYSTIC_GEM.get());
-                        output.accept(MYSTIC_BLOCK.get());
+                        output.accept(MYSTIC_BLOCK_ITEM.get());
                         output.accept(DUNGEON_CORE_ITEM.get());
                     })
                     .build());
